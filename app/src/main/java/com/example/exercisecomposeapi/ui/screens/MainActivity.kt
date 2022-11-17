@@ -1,4 +1,4 @@
-package com.example.exercisecomposeapi
+package com.example.exercisecomposeapi.ui.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,10 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.exercisecomposeapi.data.model.GroupOne
+import com.example.exercisecomposeapi.data.local.GroupOneEntity
+import com.example.exercisecomposeapi.ui.screens.ExerciseViewModel
 import com.example.exercisecomposeapi.utils.Resource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -135,12 +135,24 @@ fun FilterByCity(vm: ExerciseViewModel) {
             ) {
                 Icon(Icons.Default.Search, contentDescription = "")
             }
-        }  }
+        }
+        Column(modifier = Modifier.padding(5.dp)) {
+            Row(modifier = Modifier.padding(3.dp)) {
+                Button(onClick = { vm.clearFilter() }) {
+                    Text(text = "Clear Filter")
+                }
+                Button(onClick = { vm.sortData() }) {
+                    Text(text = "Sort")
+                    
+                }
+            }
+        }    
+        }
     }
 }
 
 @Composable
-fun Content(groupOne: GroupOne){
+fun Content(groupOne: GroupOneEntity){
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -174,7 +186,7 @@ fun Content(groupOne: GroupOne){
 }
 
 @Composable
-fun ContentList(resource: Resource<List<GroupOne>?>, refresh: () -> Unit) {
+fun ContentList(resource: Resource<List<GroupOneEntity>?>, refresh: () -> Unit) {
     val swipeRefreshState = rememberSwipeRefreshState(resource !is Resource.Loading)
 
     SwipeRefresh(state = swipeRefreshState, onRefresh = refresh) {
